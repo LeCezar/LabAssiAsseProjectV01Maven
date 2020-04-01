@@ -41,6 +41,20 @@ public class AppTest {
     public void testStudentNameForNull() {
         String studentName = null;
         int result = service.saveStudent("1",studentName,935);
-        assertEquals("Duplicate id test", 1, result);
+        assertEquals("Student name null", 1, result);
+    }
+
+    @Test
+    public void testAddTemaIdNull(){
+        String temaId = null;
+        int result = service.saveTema(temaId,"sad",3,2);
+        assertEquals("Id of Tema null",1,result);
+    }
+
+    @Test
+    public void testAddTemaDeadline(){
+        int deadline = 0;
+        int result = service.saveTema("2","sad",deadline,2);
+        assertEquals("Deadline invalid, should be between 1 and 14 and higher than startline",1,result);
     }
 }
