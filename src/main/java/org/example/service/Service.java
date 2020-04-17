@@ -1,7 +1,13 @@
 package org.example.service;
 
-import org.example.domain.*;
-import org.example.repository.*;
+import org.example.domain.Nota;
+import org.example.domain.Pair;
+import org.example.domain.Student;
+import org.example.domain.Tema;
+import org.example.repository.NotaXMLRepository;
+import org.example.repository.StudentXMLRepository;
+import org.example.repository.TemaXMLRepository;
+import org.example.validation.ValidationException;
 
 import java.time.LocalDate;
 import java.time.temporal.WeekFields;
@@ -18,20 +24,27 @@ public class Service {
         this.notaXmlRepo = notaXmlRepo;
     }
 
-    public Iterable<Student> findAllStudents() { return studentXmlRepo.findAll(); }
+    public Iterable<Student> findAllStudents() {
+        return studentXmlRepo.findAll();
+    }
 
-    public Iterable<Tema> findAllTeme() { return temaXmlRepo.findAll(); }
+    public Iterable<Tema> findAllTeme() {
+        return temaXmlRepo.findAll();
+    }
 
-    public Iterable<Nota> findAllNote() { return notaXmlRepo.findAll(); }
+    public Iterable<Nota> findAllNote() {
+        return notaXmlRepo.findAll();
+    }
 
     public int saveStudent(String id, String nume, int grupa) {
         Student student = new Student(id, nume, grupa);
-        Student result = studentXmlRepo.save(student);
+        try {
+            Student result = studentXmlRepo.save(student);
+            return (result == null) ? 1 : 0;
 
-        if (result == null) {
-            return 1;
+        } catch (ValidationException ve) {
+            return 0;
         }
-        return 0;
     }
 
     public int saveTema(String id, String descriere, int deadline, int startline) {
@@ -47,14 +60,13 @@ public class Service {
     public int saveNota(String idStudent, String idTema, double valNota, int predata, String feedback) {
         if (studentXmlRepo.findOne(idStudent) == null || temaXmlRepo.findOne(idTema) == null) {
             return -1;
-        }
-        else {
+        } else {
             int deadline = temaXmlRepo.findOne(idTema).getDeadline();
 
             if (predata - deadline > 2) {
-                valNota =  1;
+                valNota = 1;
             } else {
-                valNota =  valNota - 2.5 * (predata - deadline);
+                valNota = valNota - 2.5 * (predata - deadline);
             }
             Nota nota = new Nota(new Pair(idStudent, idTema), valNota, predata, feedback);
             Nota result = notaXmlRepo.save(nota);
