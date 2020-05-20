@@ -43,6 +43,7 @@ public class Service {
             return (result == null) ? 1 : 0;
 
         } catch (ValidationException ve) {
+            ve.printStackTrace();
             return 0;
         }
     }
@@ -52,8 +53,8 @@ public class Service {
         try {
             Tema result = temaXmlRepo.save(tema);
             return (result == null) ? 1 : 0;
-        }
-        catch (ValidationException ve) {
+        } catch (ValidationException ve) {
+            ve.printStackTrace();
             return 0;
         }
     }
@@ -70,12 +71,13 @@ public class Service {
                 valNota = valNota - 2.5 * (predata - deadline);
             }
             Nota nota = new Nota(new Pair(idStudent, idTema), valNota, predata, feedback);
-            Nota result = notaXmlRepo.save(nota);
-
-            if (result == null) {
-                return 1;
+            try {
+                Nota result = notaXmlRepo.save(nota);
+                return (result == null) ? 0 : 1;
+            } catch (ValidationException ve) {
+                ve.printStackTrace();
+                return 0;
             }
-            return 0;
         }
     }
 

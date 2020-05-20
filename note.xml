@@ -10,4 +10,9 @@
         <SaptamanaPredare>9</SaptamanaPredare>
         <Feedback>done</Feedback>
     </nota>
+    <nota IDStudent="321" IDTema="100">
+        <Nota>10.0</Nota>
+        <SaptamanaPredare>2</SaptamanaPredare>
+        <Feedback>Very good.</Feedback>
+    </nota>
 </Entitati>

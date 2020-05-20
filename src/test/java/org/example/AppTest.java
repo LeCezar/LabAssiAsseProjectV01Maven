@@ -34,14 +34,14 @@ public class AppTest {
 
     // Deprecated test, here just for jenkins run
     @Test
-    public void testIdForNull(){
-        assertEquals(1,1);
+    public void testIdForNull() {
+        assertEquals(1, 1);
     }
 
     // Deprecated test, here just for jenkins run
     @Test
-    public void testStudentNameForNull(){
-        assertEquals(1,1);
+    public void testStudentNameForNull() {
+        assertEquals(1, 1);
     }
 
     @Test
@@ -159,4 +159,35 @@ public class AppTest {
         int result = service.saveTema("2", "sad", deadline, 2);
         assertEquals("Deadline invalid, should be between 1 and 14 and higher than startline", 0, result);
     }
+
+    @Test
+    public void testAddStudent() {
+        int studentResult = service.saveStudent("1000", "Hey", 911);
+        assertEquals("Saving studdent ...", 1, studentResult);
+        service.deleteStudent("1000");
+    }
+
+    @Test
+    public void testAddStudent_addAssigment() {
+        int studentResult = service.saveStudent("100", "Cezar", 935);
+        assertEquals("Saving studdent ...", 1, studentResult);
+        int assigmentResult = service.saveTema("321", "Ceva inportant", 10, 2);
+        assertEquals("Adding assigment", 1, assigmentResult);
+        service.deleteStudent("100");
+        service.deleteTema("321");
+    }
+
+    @Test
+    public void testAllFunctionality() {
+
+        int studentResult = service.saveStudent("321", "Ioan", 922);
+        assertEquals("Saving student ...", 1, studentResult);
+        int assigmentResult = service.saveTema("100", "VVSS", 2, 1);
+        assertEquals("Adding assigment", 1, assigmentResult);
+        int gradeResult = service.saveNota("321", "100", 10, 2, "Very good.");
+        assertEquals("Adding grade ... ", 1, gradeResult);
+        service.deleteTema("100");
+        service.deleteStudent("321");
+    }
+
 }
